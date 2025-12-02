@@ -1,0 +1,433 @@
+/* ============================================
+   ESTILOS GENERALES DEL SITIO WEB
+   ============================================ */
+
+:root {
+  /* Colores base */
+  --bg-light: #f0f4ff;
+  --bg-gradient-start: #f0f4ff;
+  --bg-gradient-end: #dce3f7;
+  --bg-dark: #0f1724;
+  --bg-card-dark: #0b1220;
+  --text-primary: #333;
+  --text-light: #e6eef6;
+  --text-muted: #9aa4b2;
+  
+  /* Colores de acento */
+  --accent-primary: #0b5bd3;
+  --accent-hover: #0846a8;
+  --accent-blue: #60a5fa;
+  
+  /* Estados */
+  --state-good: #16a34a;
+  --state-warning: #f59e0b;
+  --state-danger: #ef4444;
+  
+  /* Espaciado */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Bordes */
+  --border-radius-sm: 6px;
+  --border-radius-md: 10px;
+  --border-radius-lg: 12px;
+  
+  /* Transiciones */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+}
+
+/* ============================================
+   ELEMENTOS BASE
+   ============================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", "Inter", system-ui, Arial, sans-serif;
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================
+   TIPOGRAFÍA
+   ============================================ */
+
+h1 {
+  font-size: 2rem;
+  color: var(--accent-primary);
+  margin: var(--spacing-lg) 0;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #444;
+  margin: var(--spacing-lg) 0;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.25rem;
+  color: #333;
+  margin: var(--spacing-md) 0;
+}
+
+p {
+  margin: var(--spacing-md) 0;
+  line-height: 1.6;
+}
+
+.lead {
+  margin: 0 0 var(--spacing-lg);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.small {
+  font-size: 0.9rem;
+}
+
+.muted {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* ============================================
+   HEADER & FOOTER
+   ============================================ */
+
+header {
+  text-align: center;
+  margin: var(--spacing-lg) 0;
+}
+
+footer {
+  text-align: center;
+  padding: var(--spacing-md);
+  background-color: #eee;
+  margin-top: auto;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl);
+  flex: 1;
+}
+
+.wrap {
+  max-width: 980px;
+  margin: var(--spacing-xl) auto;
+  padding: var(--spacing-lg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 6px 30px rgba(2, 6, 23, 0.7);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: var(--spacing-lg);
+}
+
+.card {
+  background: var(--bg-card-dark);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+}
+
+.result {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  border: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+.result .row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  border-bottom: 1px dashed #eef2f7;
+}
+
+.result .row:last-child {
+  border-bottom: 0;
+}
+
+/* ============================================
+   CONTROLES
+   ============================================ */
+
+label {
+  display: block;
+  margin-top: var(--spacing-md);
+  font-size: 0.9rem;
+}
+
+label.row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-sm) 0;
+  font-size: 0.85rem;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: transparent;
+  color: inherit;
+  font-size: 1rem;
+  margin-top: var(--spacing-sm);
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+
+a,
+button {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--accent-primary);
+  color: #fff;
+  text-decoration: none;
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  transition: background-color var(--transition-normal), transform var(--transition-fast);
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+}
+
+a:hover,
+button:hover {
+  background-color: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+button.secondary {
+  background: #edf2f7;
+  color: #111;
+  border: 1px solid #cbd5e0;
+}
+
+button.secondary:hover {
+  background: #e2e8f0;
+}
+
+button.copy {
+  font-size: 0.85rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+/* ============================================
+   INDICADORES Y BARRAS
+   ============================================ */
+
+.bar {
+  height: 12px;
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+
+.bar > i {
+  display: block;
+  height: 100%;
+  transition: width var(--transition-normal);
+}
+
+#entropyBar {
+  background: linear-gradient(90deg, var(--state-danger), var(--state-warning), var(--state-good));
+}
+
+#strengthBar {
+  background: linear-gradient(90deg, var(--state-danger), var(--state-warning), var(--state-good));
+}
+
+/* ============================================
+   ESTADÍSTICAS
+   ============================================ */
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.classification {
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  color: #04263b;
+  font-weight: 700;
+}
+
+.classification.good {
+  background: var(--state-good);
+}
+
+.classification.warn {
+  background: var(--state-warning);
+}
+
+.classification.bad {
+  background: var(--state-danger);
+}
+
+/* ============================================
+   CONJUNTOS DE OPCIONES
+   ============================================ */
+
+.sets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.sets label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-md);
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  margin: 0;
+  margin-top: 0;
+}
+
+.sets label input {
+  margin: 0;
+  width: auto;
+}
+
+/* ============================================
+   CONTROLES AGRUPADOS
+   ============================================ */
+
+.controls {
+  margin-top: var(--spacing-md);
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  main {
+    padding: var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+  
+  .wrap {
+    margin: var(--spacing-md) auto;
+    padding: var(--spacing-md);
+  }
+  
+  .controls {
+    flex-direction: column;
+  }
+  
+  .controls select,
+  .controls input {
+    width: 100%;
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="number"],
+  select {
+    font-size: 16px; /* Previene zoom en iOS */
+  }
+}
+
+/* ============================================
+   TEMAS (oscuro/claro)
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(180deg, #071026 0%, #072433 100%);
+    color: var(--text-light);
+  }
+  
+  h2, h3 {
+    color: var(--text-light);
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="number"],
+  select {
+    background: transparent;
+    color: var(--text-light);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .result {
+    background: #1a1f2e;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+  }
+  
+  footer {
+    background-color: #1a1f2e;
+    color: var(--text-muted);
+  }
+}
