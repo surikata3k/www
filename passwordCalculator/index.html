@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Calculadora de complejidad de contraseña</title>
+    <style>
+        :root{
+            --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2;
+            --good:#16a34a; --warn:#f59e0b; --bad:#ef4444; --accent:#60a5fa;
+        }
+        *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+        body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#071029 0%, #08131d 100%);color:#e6eef8;padding:24px}
+        .card{width:100%;max-width:720px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);padding:20px;border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+        h1{margin:0 0 10px;font-size:18px}
+        p.lead{margin:0 0 18px;color:var(--muted);font-size:13px}
+        .row{display:flex;gap:12px;align-items:center}
+        .col{flex:1}
+        input[type="password"], input[type="text"]{
+            width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.05);
+            background:rgba(255,255,255,0.02);color:inherit;font-size:15px
+        }
+        .controls{display:flex;gap:8px;margin-left:8px}
+        button{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:inherit;cursor:pointer}
+        .meter{height:14px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden;margin-top:14px}
+        .meter > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--bad),var(--warn),var(--good));transition:width .25s ease}
+        .info{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
+        .chip{background:rgba(255,255,255,0.02);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);font-size:13px;color:var(--muted)}
+        .suggestions{margin-top:12px;color:var(--muted);font-size:13px}
+        .label-small{font-size:12px;color:var(--muted);margin-bottom:6px}
+        .list{margin:8px 0 0;padding-left:18px;color:var(--muted)}
+        footer{margin-top:16px;color:var(--muted);font-size:12px}
+        .score{font-weight:600;font-variant-numeric:tabular-nums}
+        .status{font-weight:700}
+    </style>
+</head>
+<body>
+    <main class="card" role="main">
+        <h1>Calculadora de complejidad de contraseña</h1>
+        <p class="lead">Introduce una contraseña y obtén una estimación de su entropía y fuerza según longitud y tipos de caracteres.</p>
+
+        <div class="row" style="align-items:flex-start">
+            <div class="col">
+                <label class="label-small" for="pwd">Contraseña</label>
+                <div style="display:flex;gap:8px">
+                    <input id="pwd" type="password" autocomplete="new-password" placeholder="Escribe una contraseña..." />
+                    <div class="controls">
+                        <button id="toggle">Mostrar</button>
+                        <button id="copy">Copiar</button>
+                    </div>
+                </div>
+
+                <div class="meter" aria-hidden="true"><i id="meterFill"></i></div>
+
+                <div class="info" aria-live="polite">
+                    <div class="chip">Entropía: <span id="entropy" class="score">0</span> bits</div>
+                    <div class="chip">Longitud: <span id="length">0</span></div>
+                    <div class="chip">Pool: <span id="pool">0</span> caracteres</div>
+                    <div class="chip">Fuerza: <span id="strength" class="status">—</span></div>
+                </div>
+
+                <div class="suggestions" id="suggestions">
+                    <div class="label-small">Sugerencias:</div>
+                    <ul class="list" id="suggestList">
+                        <li>Introduce una contraseña para ver recomendaciones.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <aside style="width:220px">
+                <div class="label-small">Reglas utilizadas</div>
+                <ul class="list" style="color:var(--muted);margin-top:6px">
+                    <li>Pool de caracteres suma: minúsculas (26), mayúsculas (26), dígitos (10), símbolos (32)</li>
+                    <li>Entropía ≈ longitud × log2(pool)</li>
+                    <li>Se muestran recomendaciones básicas para mejorar fuerza</li>
+                </ul>
+            </aside>
+        </div>
+
+        <footer>
+            Mapa de fuerza aproximado: &lt;28 bits (Muy débil), 28–35 (Débil), 36–59 (Razonable), 60–127 (Fuerte), ≥128 (Muy fuerte).
+        </footer>
+    </main>
+
+    <script>
+        // Elementos
+        const pwd = document.getElementById('pwd');
+        const meterFill = document.getElementById('meterFill');
+        const entropyEl = document.getElementById('entropy');
+        const lengthEl = document.getElementById('length');
+        const poolEl = document.getElementById('pool');
+        const strengthEl = document.getElementById('strength');
+        const suggestions = document.getElementById('suggestList');
+        const toggle = document.getElementById('toggle');
+        const copyBtn = document.getElementById('copy');
+
+        // tamaños de pool por tipo
+        const SIZES = {
+            lower: 26,
+            upper: 26,
+            digits: 10,
+            symbols: 32 // aproximación común
+        };
+
+        function analyze(password){
+            const len = password.length;
+            lengthEl.textContent = len;
+
+            // detecta tipos presentes
+            const hasLower = /[a-z]/.test(password);
+            const hasUpper = /[A-Z]/.test(password);
+            const hasDigits = /[0-9]/.test(password);
+            const hasSymbols = /[^A-Za-z0-9]/.test(password);
+
+            let pool = 0;
+            if (hasLower) pool += SIZES.lower;
+            if (hasUpper) pool += SIZES.upper;
+            if (hasDigits) pool += SIZES.digits;
+            if (hasSymbols) pool += SIZES.symbols;
+
+            // si no hay caracteres reconocidos (ej. vacío), pool=0
+            poolEl.textContent = pool || 0;
+
+            // entropía: longitud * log2(pool)
+            let entropy = 0;
+            if (pool > 0 && len > 0) {
+                entropy = len * Math.log2(pool);
+            }
+            // redondeo a 1 decimal
+            entropy = Math.round(entropy * 10) / 10;
+            entropyEl.textContent = entropy;
+
+            // determina etiqueta de fuerza
+            let label = 'Muy débil';
+            if (entropy < 28) label = 'Muy débil';
+            else if (entropy < 36) label = 'Débil';
+            else if (entropy < 60) label = 'Razonable';
+            else if (entropy < 128) label = 'Fuerte';
+            else label = 'Muy fuerte';
+            strengthEl.textContent = label;
+
+            // actualiza barra (mapear 0-60 bits a 0-100% y saturar)
+            const pct = Math.min(100, (entropy / 60) * 100);
+            meterFill.style.width = pct + '%';
+
+            // ajustar color por estado (simple)
+            if (entropy < 28) {
+                meterFill.style.filter = 'hue-rotate(0deg) saturate(120%)';
+            } else if (entropy < 60) {
+                meterFill.style.filter = 'hue-rotate(45deg) saturate(110%)';
+            } else {
+                meterFill.style.filter = 'hue-rotate(110deg) saturate(120%)';
+            }
+
+            // sugerencias
+            const tips = [];
+            if (len === 0) {
+                tips.push('Introduce una contraseña para obtener recomendaciones.');
+            } else {
+                if (len < 8) tips.push('Aumenta la longitud (>= 12 recomendado).');
+                if (!hasLower) tips.push('Incluye letras minúsculas.');
+                if (!hasUpper) tips.push('Incluye letras mayúsculas.');
+                if (!hasDigits) tips.push('Incluye números.');
+                if (!hasSymbols) tips.push('Incluye símbolos (p. ej. !@#%&*).');
+                // comprobar caracteres únicos
+                const uniqueCount = new Set(password).size;
+                if (uniqueCount / Math.max(len,1) < 0.5) tips.push('Evita repetir demasiados caracteres.');
+                // evitar patrones simples (secuencias)
+                if (/(1234|abcd|password|qwerty|asdf)/i.test(password)) tips.push('Evita patrones comunes o palabras del diccionario.');
+                if (entropy >= 60) tips.push('Contraseña con buena entropía.');
+            }
+
+            // renderizar sugerencias
+            suggestions.innerHTML = '';
+            for (const t of tips) {
+                const li = document.createElement('li');
+                li.textContent = t;
+                suggestions.appendChild(li);
+            }
+        }
+
+        // eventos
+        pwd.addEventListener('input', ()=> analyze(pwd.value));
+        toggle.addEventListener('click', ()=>{
+            if (pwd.type === 'password') { pwd.type = 'text'; toggle.textContent = 'Ocultar'; }
+            else { pwd.type = 'password'; toggle.textContent = 'Mostrar'; }
+        });
+        copyBtn.addEventListener('click', async ()=>{
+            try {
+                await navigator.clipboard.writeText(pwd.value);
+                copyBtn.textContent = 'Copiado';
+                setTimeout(()=> copyBtn.textContent = 'Copiar', 1200);
+            } catch(e){
+                copyBtn.textContent = 'Error';
+                setTimeout(()=> copyBtn.textContent = 'Copiar', 1200);
+            }
+        });
+
+        // inicializa con vacío
+        analyze('');
+    </script>
+</body>
+</html>
