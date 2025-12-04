@@ -1,499 +1,73 @@
-/* ============================================
-   ESTILOS GENERALES DEL SITIO WEB
-   ============================================ */
-
+/* --- Variables Reutilizadas --- */
 :root {
-  /* Colores base - Tema Blanco */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --bg-tertiary: #f0f2f5;
-  
-  --text-primary: #1a1a1a;
-  --text-secondary: #555555;
-  --text-tertiary: #999999;
-  --text-muted: #b0b0b0;
-  
-  /* Colores de acento */
-  --accent-primary: #0b5bd3;
-  --accent-hover: #0846a8;
-  --accent-light: #e8f4fd;
-  
-  /* Estados */
-  --state-good: #16a34a;
-  --state-warning: #f59e0b;
-  --state-danger: #ef4444;
-  
-  /* Bordes */
-  --border-color: #e0e0e0;
-  --border-color-light: #f0f0f0;
-  
-  /* Espaciado */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  
-  /* Bordes redondeados */
-  --border-radius-sm: 6px;
-  --border-radius-md: 10px;
-  --border-radius-lg: 12px;
-  
-  /* Transiciones */
-  --transition-fast: 0.2s ease;
-  --transition-normal: 0.3s ease;
-  
-  /* Sombras */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --bg-color: #f4f7f6; /* Fondo general claro */
+    --body-text: #333; /* Color de texto principal */
+    --card-bg: #fff; /* Fondo de las tarjetas/contenedores (no aplica directamente aquí, pero útil) */
+    --border-color: #ddd; /* Color de borde sutil */
+    --primary-color: #007bff; /* Color principal para botones/énfasis */
+    --primary-hover: #0056b3; /* Color primario al pasar el ratón */
+    
+    --spacing: 1.5rem;
+    --radius: 8px; /* Borde redondeado */
 }
 
-/* ============================================
-   ELEMENTOS BASE
-   ============================================ */
-
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.6;
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--body-text);
+    line-height: 1.6;
+    padding: var(--spacing);
+    text-align: center; /* Centra el contenido de bloque como el <h1> */
 }
 
-/* ============================================
-   TIPOGRAFÍA
-   ============================================ */
+/* --- Estructura Principal y Título --- */
 
 h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--accent-primary);
-  margin: var(--spacing-lg) 0;
-  text-align: center;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing);
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--border-color);
+    display: inline-block; /* Ajusta el borde solo al tamaño del texto */
 }
 
-h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: var(--spacing-lg) 0;
-  text-align: center;
+/* --- Estilo de Enlaces (Botones) --- */
+
+/* Envuelve los enlaces en un contenedor para limitar su ancho si es necesario */
+body > a {
+    display: block; /* Hace que el enlace ocupe todo el ancho disponible */
+    max-width: 400px; /* Limita el ancho máximo para que no se extienda demasiado en pantallas grandes */
+    margin: 0.75rem auto; /* Centra el enlace y añade margen vertical */
+    
+    /* Estilo visual de botón */
+    background-color: var(--card-bg); /* Fondo blanco */
+    color: var(--primary-color); /* Texto en color primario */
+    text-decoration: none; /* Quita el subrayado */
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--primary-color);
+    border-radius: var(--radius);
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: var(--spacing-md) 0;
+/* Efecto al pasar el ratón */
+body > a:hover {
+    background-color: var(--primary-color);
+    color: #fff; /* Texto blanco */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px); /* Pequeño levantamiento */
 }
 
-p {
-  margin: var(--spacing-md) 0;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-.lead {
-  margin: 0 0 var(--spacing-lg);
-  color: var(--text-tertiary);
-  font-size: 0.95rem;
-}
-
-.small {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-}
-
-.muted {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-}
-
-/* ============================================
-   HEADER & FOOTER
-   ============================================ */
-
-header {
-  text-align: center;
-  margin: var(--spacing-lg) 0;
-}
-
-footer {
-  text-align: center;
-  padding: var(--spacing-lg);
-  background-color: var(--bg-secondary);
-  border-top: 1px solid var(--border-color-light);
-  margin-top: auto;
-  font-size: 0.9rem;
-  color: var(--text-tertiary);
-}
-
-/* ============================================
-   LAYOUT
-   ============================================ */
-
-main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  padding: var(--spacing-xl);
-  flex: 1;
-}
-
-.wrap {
-  max-width: 980px;
-  margin: var(--spacing-xl) auto;
-  padding: var(--spacing-lg);
-  background-color: var(--bg-primary);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border-color-light);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: var(--spacing-lg);
-}
-
-.card {
-  background-color: var(--bg-secondary);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius-md);
-  border: 1px solid var(--border-color-light);
-  box-shadow: var(--shadow-sm);
-}
-
-.result {
-  margin-top: var(--spacing-lg);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius-md);
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-primary);
-  box-shadow: var(--shadow-sm);
-}
-
-.result .row {
-  display: flex;
-  justify-content: space-between;
-  padding: var(--spacing-md) 0;
-  border-bottom: 1px solid var(--border-color-light);
-}
-
-.result .row:last-child {
-  border-bottom: 0;
-}
-
-/* ============================================
-   CONTROLES
-   ============================================ */
-
-label {
-  display: block;
-  margin-top: var(--spacing-md);
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-label.row {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  margin: var(--spacing-sm) 0;
-  font-size: 0.9rem;
-  font-weight: normal;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="number"],
-select {
-  width: 100%;
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius-sm);
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  font-size: 1rem;
-  font-family: inherit;
-  margin-top: var(--spacing-sm);
-  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
-}
-
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="number"]:focus,
-select:focus {
-  outline: none;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px var(--accent-light);
-}
-
-input[type="checkbox"] {
-  cursor: pointer;
-  width: 18px;
-  height: 18px;
-  accent-color: var(--accent-primary);
-}
-
-/* ============================================
-   BOTONES
-   ============================================ */
-
-a,
-button {
-  display: inline-block;
-  padding: 0.75rem 1.25rem;
-  background-color: var(--accent-primary);
-  color: #ffffff;
-  text-decoration: none;
-  border-radius: var(--border-radius-sm);
-  font-weight: 600;
-  font-size: inherit;
-  border: none;
-  cursor: pointer;
-  transition: background-color var(--transition-normal), transform var(--transition-fast), box-shadow var(--transition-normal);
-  box-shadow: var(--shadow-sm);
-}
-
-a:hover,
-button:hover {
-  background-color: var(--accent-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-a:active,
-button:active {
-  transform: translateY(0);
-}
-
-button.secondary {
-  background-color: var(--bg-secondary);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  box-shadow: none;
-}
-
-button.secondary:hover {
-  background-color: var(--bg-tertiary);
-  box-shadow: var(--shadow-sm);
-}
-
-button.copy {
-  font-size: 0.85rem;
-  padding: 0.5rem 0.75rem;
-}
-
-/* ============================================
-   INDICADORES Y BARRAS
-   ============================================ */
-
-.bar {
-  height: 12px;
-  border-radius: var(--border-radius-sm);
-  background-color: var(--bg-tertiary);
-  overflow: hidden;
-  margin-top: var(--spacing-md);
-}
-
-.bar > i {
-  display: block;
-  height: 100%;
-  width: 0;
-  transition: width var(--transition-normal);
-}
-
-#entropyBar {
-  background: linear-gradient(90deg, var(--state-danger), var(--state-warning), var(--state-good));
-}
-
-#strengthBar {
-  background: linear-gradient(90deg, var(--state-danger), var(--state-warning), var(--state-good));
-}
-
-/* ============================================
-   ESTADÍSTICAS
-   ============================================ */
-
-.stat {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius-sm);
-  background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-color-light);
-}
-
-.classification {
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius-sm);
-  color: #ffffff;
-  font-weight: 700;
-  text-align: center;
-}
-
-.classification.good {
-  background-color: var(--state-good);
-}
-
-.classification.warn {
-  background-color: var(--state-warning);
-}
-
-.classification.bad {
-  background-color: var(--state-danger);
-}
-
-/* ============================================
-   CONJUNTOS DE OPCIONES
-   ============================================ */
-
-.sets {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-md);
-}
-
-.sets label {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius-md);
-  background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-color-light);
-  cursor: pointer;
-  margin: 0;
-  font-weight: normal;
-  transition: background-color var(--transition-normal), border-color var(--transition-normal);
-}
-
-.sets label:hover {
-  background-color: var(--bg-secondary);
-  border-color: var(--border-color);
-}
-
-.sets label input {
-  margin: 0;
-  width: auto;
-}
-
-/* ============================================
-   CONTROLES AGRUPADOS
-   ============================================ */
-
-.controls {
-  margin-top: var(--spacing-lg);
-  display: flex;
-  gap: var(--spacing-md);
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-
-@media (max-width: 900px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-  
-  h1 {
-    font-size: 1.5rem;
-  }
-  
-  h2 {
-    font-size: 1.25rem;
-  }
-}
-
-@media (max-width: 640px) {
-  main {
-    padding: var(--spacing-lg);
-    gap: var(--spacing-sm);
-  }
-  
-  .wrap {
-    margin: var(--spacing-lg) auto;
-    padding: var(--spacing-md);
-  }
-  
-  .controls {
-    flex-direction: column;
-    gap: var(--spacing-sm);
-  }
-  
-  .controls select,
-  .controls input {
-    width: 100%;
-  }
-  
-  input[type="text"],
-  input[type="password"],
-  input[type="number"],
-  select {
-    font-size: 16px; /* Previene zoom automático en iOS */
-  }
-}
-
-/* ============================================
-   TEMA OSCURO (Opcional)
-   ============================================ */
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #242424;
-    --bg-tertiary: #2d2d2d;
-    --text-primary: #f0f0f0;
-    --text-secondary: #d0d0d0;
-    --text-tertiary: #a0a0a0;
-    --text-muted: #808080;
-    --border-color: #3a3a3a;
-    --border-color-light: #2d2d2d;
-  }
-  
-  body {
-    background-color: var(--bg-primary);
-  }
-  
-  input[type="text"],
-  input[type="password"],
-  input[type="number"],
-  select {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    border-color: var(--border-color);
-  }
-  
-  .result {
-    background-color: var(--bg-secondary);
-    border-color: var(--border-color);
-    color: var(--text-primary);
-  }
-  
-  footer {
-    background-color: var(--bg-secondary);
-    border-top-color: var(--border-color);
-    color: var(--text-tertiary);
-  }
+/* Efecto al pulsar/activar */
+body > a:active {
+    background-color: var(--primary-hover);
+    transform: translateY(0);
 }

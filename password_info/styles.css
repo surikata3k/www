@@ -1,0 +1,209 @@
+/* --- Variables y Reset Básico --- */
+:root {
+    /* Reutiliza las variables de color de la calculadora */
+    --bg-color: #f4f7f6;
+    --body-text: #333;
+    --card-bg: #fff;
+    --border-color: #ddd;
+    --muted-text: #666;
+    --primary-color: #007bff;
+    
+    --bad: #dc3545; /* Rojo (Muy débil) */
+    --warn: #ffc107; /* Amarillo (Débil) */
+    --good: #28a745; /* Verde (Fuerte) */
+    --teal: #17a2b8; /* Turquesa (Muy fuerte) */
+    --orange: #fd7e14; /* Naranja (Aceptable) */
+    
+    --spacing: 1.5rem;
+    --radius: 8px;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--body-text);
+    line-height: 1.6;
+    padding: var(--spacing);
+    max-width: 700px; /* Limita el ancho del contenido principal */
+    margin: 0 auto;
+}
+
+/* --- Títulos y Texto --- */
+
+h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.small.muted {
+    font-size: 0.95rem;
+    color: var(--muted-text);
+    margin-bottom: var(--spacing);
+}
+
+/* --- Controles de Formulario --- */
+
+label[for="pwd"] {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius);
+    font-size: 1.2rem;
+    color: var(--body-text);
+    background-color: var(--card-bg);
+    margin-bottom: var(--spacing);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="password"]:focus,
+input[type="text"]:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Grupo de Controles (Botones y Selector) */
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: var(--spacing);
+}
+
+.controls button,
+.controls select {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+    font-weight: 600;
+}
+
+/* Botón principal */
+#analyze {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+#analyze:hover {
+    background-color: #0056b3;
+}
+
+/* Botones secundarios (Mostrar, Copiar) */
+.secondary {
+    background-color: var(--border-color);
+    color: var(--body-text);
+}
+
+.secondary:hover {
+    background-color: #ccc;
+}
+
+/* Estilo del selector de velocidad */
+.controls select {
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--muted-text);
+}
+
+/* --- Contenedor de Resultados --- */
+
+.result {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: var(--spacing);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--border-color);
+    font-size: 1.05rem;
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.row strong {
+    font-weight: 600;
+    color: var(--body-text);
+}
+
+.row span {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* Estilos específicos para fortaleza y tiempo */
+#strength {
+    font-size: 1.2rem;
+}
+
+#combinations, #timeEstimate {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--body-text); /* Color más neutro para cifras largas */
+}
+
+/* Barra de Fortaleza */
+.bar {
+    height: 14px;
+    background-color: var(--border-color);
+    border-radius: 7px;
+    overflow: hidden;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+.bar i {
+    display: block;
+    height: 100%;
+    transition: width 0.4s ease, background-color 0.3s;
+    /* La lógica de color se maneja con JS y las variables: --bad, --warn, --good, --teal */
+}
+
+/* Colores de la barra según la fortaleza (usados en JS) */
+.bar i[style*="12%"], .bar i[style*="8%"] { background-color: var(--bad); }
+.bar i[style*="30%"] { background-color: var(--warn); }
+.bar i[style*="55%"] { background-color: var(--orange); }
+.bar i[style*="80%"] { background-color: var(--good); }
+.bar i[style*="100%"] { background-color: var(--teal); }
+
+/* Media Query para mejorar la disposición en móviles */
+@media (max-width: 500px) {
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .controls button {
+        width: 100%;
+    }
+
+    .controls label {
+        margin-left: 0 !important;
+        margin-top: 5px;
+    }
+}

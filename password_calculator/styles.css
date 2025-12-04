@@ -1,0 +1,228 @@
+/* --- Variables y Reset Básico --- */
+:root {
+    /* Colores */
+    --bg-color: #f4f7f6; /* Fondo general claro */
+    --body-text: #333; /* Color de texto principal */
+    --card-bg: #fff; /* Fondo de las tarjetas/contenedores */
+    --border-color: #ddd; /* Color de borde sutil */
+    --muted-text: #666; /* Texto secundario/etiquetas */
+    --primary-color: #007bff; /* Color principal para botones/énfasis */
+
+    /* Colores de Clasificación */
+    --bad: #dc3545; /* Rojo (Muy débil) */
+    --warn: #ffc107; /* Amarillo (Débil) */
+    --good: #28a745; /* Verde (Fuerte) */
+    --teal: #17a2b8; /* Turquesa (Muy fuerte) */
+    --orange: #fd7e14; /* Naranja (Aceptable) */
+    
+    /* Espaciado */
+    --spacing: 1.5rem;
+    --radius: 8px; /* Borde redondeado */
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--body-text);
+    line-height: 1.6;
+    padding: var(--spacing) 0;
+}
+
+/* --- Estructura Principal --- */
+
+.wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 var(--spacing);
+}
+
+h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.lead {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--muted-text);
+    margin-bottom: var(--spacing);
+}
+
+/* --- Tarjetas y Contenido --- */
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing);
+}
+
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: var(--spacing);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Formularios y Entradas --- */
+
+.muted {
+    font-size: 0.9rem;
+    color: var(--muted-text);
+    display: block; /* Para que ocupe su propia línea si es necesario */
+    margin-bottom: 3px;
+}
+
+.row {
+    display: block; /* Etiqueta principal */
+}
+
+input[type="number"],
+input[type="text"],
+select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    color: var(--body-text);
+    background-color: #fff;
+    transition: border-color 0.2s;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus,
+select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Checkboxes de Conjuntos */
+.sets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem var(--spacing);
+}
+
+.sets label {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.sets input[type="checkbox"] {
+    margin-right: 8px;
+    width: auto; /* Anula el 100% */
+}
+
+/* Botones */
+button {
+    padding: 0.6rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+    font-weight: 600;
+}
+
+#calcBtn {
+    background-color: var(--primary-color);
+    color: #fff;
+    flex: 1;
+}
+
+#calcBtn:hover {
+    background-color: #0056b3;
+}
+
+#resetBtn {
+    background-color: var(--border-color);
+    color: var(--body-text);
+    flex: 0 0 auto;
+}
+
+#resetBtn:hover {
+    background-color: #ccc;
+}
+
+/* --- Resultados --- */
+
+.out {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.stat {
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.stat div:last-child {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 2px;
+}
+
+#timeWorst, #timeAvg {
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+}
+
+
+/* Clasificación de Entropía */
+.classification {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    transition: background-color 0.3s;
+}
+
+/* Barra de Entropía */
+.bar {
+    height: 12px;
+    background-color: var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.bar i {
+    display: block;
+    height: 100%;
+    transition: width 0.4s ease, background-color 0.3s;
+    /* Los estilos de ancho y color se establecen por JS (var(--bad), var(--warn), var(--good)) */
+}
+
+
+/* --- Footer --- */
+
+footer {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted-text);
+    margin-top: var(--spacing);
+    padding-top: var(--spacing);
+    border-top: 1px solid var(--border-color);
+}
