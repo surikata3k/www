@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ca">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Calculador de dies per RA</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <main class="container">
+        <h1>Calendari de RAs — calculador</h1>
+
+        <section class="card">
+            <h2>Accions</h2>
+            <div class="row">
+                <button id="calculate">Calcular</button>
+                <button id="exportBtn" class="alt">Exportar (.txt)</button>
+                <button id="importBtn" class="alt">Importar (.txt)</button>
+                <input id="importFile" type="file" accept=".txt,application/json" style="display:none">
+                <button id="reset" class="danger">Reset</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>1) Dates i vacances</h2>
+            <div class="grid">
+                <label>Data d'inici <input id="startDate" type="date"></label>
+                <label>Data fi <input id="endDate" type="date"></label>
+            </div>
+            <label>Vacances (una per línia; o rang: DD-MM-YYYY : DD-MM-YYYY)</label>
+            <textarea id="vacations" placeholder="Ex: 24/12/2025\n 01/01/2026 : 05/01/2026" rows="4"></textarea>
+        </section>
+
+        <section class="card">
+            <h2>2) Hores de classe per dia de la setmana</h2>
+            <div class="week-grid">
+                <label>Dl <input type="number" min="0" step="1" id="w0" value="0"></label>
+                <label>Dm <input type="number" min="0" step="1" id="w1" value="0"></label>
+                <label>Dc <input type="number" min="0" step="1" id="w2" value="0"></label>
+                <label>Dj <input type="number" min="0" step="1" id="w3" value="0"></label>
+                <label>Dv <input type="number" min="0" step="1" id="w4" value="0"></label>
+                <label>Ds <input type="number" min="0" step="1" id="w5" value="0"></label>
+                <label>Dg <input type="number" min="0" step="1" id="w6" value="0"></label>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>3) Llista de RAs</h2>
+            <div id="raList"></div>
+            <div class="row">
+                <button id="addRA">Afegir RA</button>
+                <button id="clearRAs" class="alt">Netejar RAs</button>
+            </div>
+        </section>
+
+
+
+        <section class="card results" id="results" hidden>
+            <h2>Resultats</h2>
+            <div class="table-wrap">
+                <table id="resultTable">
+                    <thead>
+                        <tr>
+                            <th>RA</th>
+                            <th>Hores</th>
+                            <th>Inici</th>
+                            <th>Fi</th>
+                            <th>Dies utilitzats</th>
+                            <th>Comentari</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
